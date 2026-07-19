@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Edit User - gamis{% endblock %}
+
+{% block content %}
+<div class="form-card" style="max-width: 450px;">
+  <h1 class="form-title" id="edit-user-header">Edit User: {{ user.username }}</h1>
+  
+  <form action="{{ url_for('edit_user', user_id=user.id) }}" method="POST" id="edit-user-form">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" class="form-control" value="{{ user.username }}" placeholder="Enter username (min 3 chars)" minlength="3" required {% if user.username == 'admin' %}readonly{% else %}autofocus{% endif %}>
+      {% if user.username == 'admin' %}
+        <small style="color: var(--text-secondary); margin-top: 0.25rem; display: block;">Original admin username cannot be changed.</small>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password (Optional)</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Leave blank to keep current password" minlength="6">
+      <small style="color: var(--text-secondary); margin-top: 0.25rem; display: block;">Minimum 6 characters if updating.</small>
+    </div>
+
+    {% if user.username != 'admin' %}
+      <div class="form-group" style="margin-top: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+        <input type="checkbox" id="is_admin" name="is_admin" style="width: 18px; height: 18px; cursor: pointer;" {% if user.is_admin %}checked{% endif %}>
+        <label for="is_admin" style="margin-bottom: 0; cursor: pointer; font-weight: 500;">Give Administrator Privileges</label>
+      </div>
+    {% else %}
+      <input type="hidden" name="is_admin" value="on">
+    {% endif %}
+
+    <div class="form-actions" style="margin-top: 2.5rem;">
+      <a href="{{ url_for('list_users') }}" class="btn btn-secondary" id="btn-cancel">Cancel</a>
+      <button type="submit" class="btn btn-primary" id="btn-submit">Save Changes</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Item - gamis{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <h1 class="form-title" id="form-header-title">{{ action }} Inventory Item</h1>
+  
+  <form action="" method="POST" enctype="multipart/form-data" id="inventory-form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" class="form-control" placeholder="e.g., Emerald, Amethyst Crystal" required value="{{ item.name if item else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="custom_id">Custom ID (Optional)</label>
+      <input type="text" id="custom_id" name="custom_id" class="form-control" placeholder="e.g., GEM-001, MIN-042" value="{{ item.custom_id if item and item.custom_id else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type / Category</label>
+      <input type="text" id="type" name="type" class="form-control" placeholder="e.g., Gem, Mineral, Meteorite" required value="{{ item.type if item else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="weight">Weight</label>
+      <input type="text" id="weight" name="weight" class="form-control" placeholder="e.g., 2.5 ct, 14.8g" required value="{{ item.weight if item else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="date">Acquisition Date</label>
+      <input type="date" id="date" name="date" class="form-control" required value="{{ item.date if item else '' }}">
+    </div>
+
+    <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="form-group">
+        <label for="cost">Cost Price ($)</label>
+        <input type="number" id="cost" name="cost" class="form-control" placeholder="0.00" step="0.01" min="0" required value="{{ item.cost if item else '' }}">
+      </div>
+      <div class="form-group">
+        <label for="price">Selling Price ($)</label>
+        <input type="number" id="price" name="price" class="form-control" placeholder="0.00" step="0.01" min="0" required value="{{ item.price if item else '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="photo-input">Upload Photo</label>
+      <input type="file" id="photo-input" name="photo" class="form-control" accept="image/*">
+      
+      <div class="file-preview" id="preview-container">
+        {% if item and item.photo_name %}
+          <!-- When editing, show current photo as preview -->
+          <img src="/uploads/{{ item.photo_name }}" alt="Current Photo">
+        {% else %}
+          <span style="color: var(--text-secondary);">Image Preview</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary" id="btn-cancel">Cancel</a>
+      <button type="submit" class="btn btn-primary" id="btn-submit">{{ action }} Item</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

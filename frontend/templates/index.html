@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - gamis{% endblock %}
+
+{% block content %}
+  <!-- Stats Section -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-title">Total Items</div>
+      <div class="stat-value" id="stat-total-items">{{ total_items }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Total Cost</div>
+      <div class="stat-value" id="stat-total-cost">${{ "%.2f"|format(total_cost) }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Total Value</div>
+      <div class="stat-value" id="stat-total-value">${{ "%.2f"|format(total_value) }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Est. Profit</div>
+      <div class="stat-value" id="stat-est-profit" style="color: var(--accent);">
+        ${{ "%.2f"|format(potential_profit) }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Controls Section -->
+  <section class="control-row">
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search gems, minerals, categories..." aria-label="Search items">
+    </div>
+    <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-body">+ Create Entry</a>
+  </section>
+
+  <!-- Inventory Grid -->
+  <section class="inventory-grid" id="inventory-grid">
+    {% for item in items %}
+      <article class="item-card" id="item-card-{{ item.id }}" data-custom-id="{{ item.custom_id|default('', true) }}">
+        <a href="{{ url_for('item_detail', item_id=item.id) }}" class="card-link" aria-label="View details of {{ item.name }}"></a>
+        
+        <div class="item-img-container">
+          <span class="item-type-badge">{{ item.type }}</span>
+          {% if item.photo_name %}
+            <img src="/uploads/{{ item.photo_name }}" alt="{{ item.name }}" class="item-img" loading="lazy">
+          {% else %}
+            <div class="no-img-placeholder">
+              <span style="font-size: 3rem;">💎</span>
+              <span>No Photo</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="item-details">
+          <h2 class="item-name">{{ item.name }}</h2>
+          <div class="item-meta-row">
+            <span>Weight:</span>
+            <span style="font-weight: 600;">{{ item.weight }}</span>
+          </div>
+          <div class="item-meta-row">
+            <span>Acquired:</span>
+            <span>{{ item.date }}</span>
+          </div>
+          <div class="item-meta-row" style="font-size: 0.8rem; margin-top: 0.25rem;">
+            <span>Added by:</span>
+            <span style="font-style: italic;">{{ item.added_by.username }}</span>
+          </div>
+          <div class="item-pricing">
+            <span class="item-cost-val">Cost: ${{ "%.2f"|format(item.cost) }}</span>
+            <span class="item-price-val">${{ "%.2f"|format(item.price) }}</span>
+          </div>
+        </div>
+      </article>
+    {% else %}
+      <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-secondary);">
+        <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">🔍</span>
+        <h3>No items in inventory.</h3>
+        <p style="margin-top: 0.5rem;">Click the button above to add your first gem or mineral!</p>
+      </div>
+    {% endfor %}
+  </section>
+{% endblock %}
