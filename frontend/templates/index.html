@@ -30,13 +30,32 @@
     <div class="search-bar">
       <input type="text" id="search-input" placeholder="Search gems, minerals, categories..." aria-label="Search items">
     </div>
+    <div class="sort-container" style="display: flex; align-items: center; gap: 0.5rem;">
+      <label for="sort-select" style="color: var(--text-secondary); font-size: 0.9rem; white-space: nowrap;">Sort by:</label>
+      <select id="sort-select" class="form-select-sm">
+        <option value="date-desc" selected>Date Added (Newest)</option>
+        <option value="date-asc">Date Added (Oldest)</option>
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="price-asc">Price (Low to High)</option>
+        <option value="price-desc">Price (High to Low)</option>
+        <option value="cost-asc">Cost (Low to High)</option>
+        <option value="cost-desc">Cost (High to Low)</option>
+      </select>
+    </div>
     <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-body">+ Create Entry</a>
   </section>
 
   <!-- Inventory Grid -->
   <section class="inventory-grid" id="inventory-grid">
     {% for item in items %}
-      <article class="item-card" id="item-card-{{ item.id }}" data-custom-id="{{ item.custom_id|default('', true) }}">
+      <article class="item-card" id="item-card-{{ item.id }}" 
+               data-custom-id="{{ item.custom_id|default('', true) }}"
+               data-name="{{ item.name|e }}"
+               data-date="{{ item.date }}"
+               data-price="{{ item.price }}"
+               data-cost="{{ item.cost }}"
+               data-type="{{ item.type|e }}">
         <a href="{{ url_for('item_detail', item_id=item.id) }}" class="card-link" aria-label="View details of {{ item.name }}"></a>
         
         <div class="item-img-container">

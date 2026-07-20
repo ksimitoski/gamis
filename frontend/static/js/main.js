@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageNumbersContainer = document.getElementById('page-numbers');
     const perPageSelect = document.getElementById('per-page-select');
 
+    const sortSelect = document.getElementById('sort-select');
+    const inventoryGrid = document.getElementById('inventory-grid');
+
     if (itemCards.length > 0 && paginationContainer) {
         let currentPage = 1;
         let itemsPerPage = parseInt(perPageSelect.value) || 25;
@@ -110,20 +113,57 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        function sortCards() {
+            if (!sortSelect || !inventoryGrid) {
+                updatePagination();
+                return;
+            }
+            const sortVal = sortSelect.value;
+            const [field, direction] = sortVal.split('-');
+            const cardsArray = Array.from(itemCards);
+
+            cardsArray.sort((a, b) => {
+                let valA, valB;
+                if (field === 'price' || field === 'cost') {
+                    valA = parseFloat(a.getAttribute(`data-${field}`)) || 0;
+                    valB = parseFloat(b.getAttribute(`data-${field}`)) || 0;
+                } else {
+                    valA = (a.getAttribute(`data-${field}`) || '').toLowerCase();
+                    valB = (b.getAttribute(`data-${field}`) || '').toLowerCase();
+                }
+
+                if (valA < valB) return direction === 'asc' ? -1 : 1;
+                if (valA > valB) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            // Re-append sorted cards in DOM
+            cardsArray.forEach(card => inventoryGrid.appendChild(card));
+            
+            // Re-apply search/filter
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            filteredCards = cardsArray.filter(card => {
+                const name = (card.getAttribute('data-name') || '').toLowerCase();
+                const type = (card.getAttribute('data-type') || '').toLowerCase();
+                const customId = (card.getAttribute('data-custom-id') || '').toLowerCase();
+                return name.includes(query) || type.includes(query) || customId.includes(query);
+            });
+
+            currentPage = 1;
+            updatePagination();
+        }
+
         // Search integration
         if (searchInput) {
             searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
+                sortCards(); // Sort on input changes to keep order correct
+            });
+        }
 
-                filteredCards = Array.from(itemCards).filter(card => {
-                    const name = card.querySelector('.item-name').textContent.toLowerCase();
-                    const type = card.querySelector('.item-type-badge').textContent.toLowerCase();
-                    const customId = (card.getAttribute('data-custom-id') || '').toLowerCase();
-                    return name.includes(query) || type.includes(query) || customId.includes(query);
-                });
-
-                currentPage = 1;
-                updatePagination();
+        // Sort Select Change
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                sortCards();
             });
         }
 
@@ -160,15 +200,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Initial run
-        updatePagination();
+        // Initial run - Sort first
+        sortCards();
     } else if (searchInput) {
         // Fallback search behavior if on a page without pagination
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
             itemCards.forEach(card => {
-                const name = card.querySelector('.item-name').textContent.toLowerCase();
-                const type = card.querySelector('.item-type-badge').textContent.toLowerCase();
+                const name = card.querySelector('.item-name') ? card.querySelector('.item-name').textContent.toLowerCase() : '';
+                const type = card.querySelector('.item-type-badge') ? card.querySelector('.item-type-badge').textContent.toLowerCase() : '';
                 const customId = (card.getAttribute('data-custom-id') || '').toLowerCase();
 
                 if (name.includes(query) || type.includes(query) || customId.includes(query)) {

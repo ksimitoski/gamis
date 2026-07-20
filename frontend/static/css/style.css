@@ -7,9 +7,11 @@
   --bg-secondary: #ffffff;
   --text-primary: #1e293b;
   --text-secondary: #64748b;
-  --accent: #10b981; /* Emerald green represents gems/crystals */
+  --accent: #10b981;
+  /* Emerald green represents gems/crystals */
   --accent-hover: #059669;
-  --accent-secondary: #8b5cf6; /* Amethyst purple accent */
+  --accent-secondary: #8b5cf6;
+  /* Amethyst purple accent */
   --accent-secondary-hover: #7c3aed;
   --danger: #ef4444;
   --danger-hover: #dc2626;
@@ -86,6 +88,7 @@ header {
 .logo span {
   background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -628,6 +631,7 @@ main {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
