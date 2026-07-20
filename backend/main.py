@@ -437,3 +437,36 @@ def delete_item(
     db.delete(db_item)
     db.commit()
     return {"detail": "Item deleted successfully"}
+
+# -----------------
+# System Config Endpoints
+# -----------------
+@app.get("/api/config/banner")
+def get_banner_text(db: Session = Depends(get_db)):
+    config = db.query(models.SystemConfig).filter(models.SystemConfig.key == "banner_text").first()
+    if not config:
+        return {"value": "gamis"}
+    return {"value": config.value}
+
+@app.post("/api/config/banner")
+def update_banner_text(
+    config_update: schemas.SystemConfigUpdate,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The user does not have enough privileges"
+        )
+    
+    config = db.query(models.SystemConfig).filter(models.SystemConfig.key == "banner_text").first()
+    if not config:
+        config = models.SystemConfig(key="banner_text", value=config_update.value)
+        db.add(config)
+    else:
+        config.value = config_update.value
+    
+    db.commit()
+    return {"value": config.value}
+

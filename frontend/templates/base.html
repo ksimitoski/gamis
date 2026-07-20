@@ -23,7 +23,7 @@
 
       <a href="{{ url_for('index') }}" class="logo" id="nav-logo">
         <div class="logo-icon">💎</div>
-        <span>gamis</span>
+        <span>{{ banner_text }}</span>
       </a>
       <div class="nav-actions">
         <!-- Theme Toggle -->
@@ -41,7 +41,7 @@
               👤 {{ session.get('username') }}
             </span>
             {% if session.get('is_admin') %}
-              <a href="{{ url_for('list_users') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-manage-users-nav">Manage Users</a>
+              <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-admin-nav">Admin</a>
             {% endif %}
             <a href="{{ url_for('change_password') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-change-password-nav">Change Password</a>
             <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-logout-nav">Logout</a>

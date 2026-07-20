@@ -6,7 +6,21 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "gamis-secret-key-12345")
 BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
+@app.context_processor
+def inject_banner():
+    if "BANNER_TEXT" not in app.config:
+        try:
+            res = requests.get(f"{BACKEND_URL}/api/config/banner", timeout=2)
+            if res.status_code == 200:
+                app.config["BANNER_TEXT"] = res.json().get("value", "gamis")
+            else:
+                app.config["BANNER_TEXT"] = "gamis"
+        except Exception:
+            app.config["BANNER_TEXT"] = "gamis"
+    return {"banner_text": app.config.get("BANNER_TEXT", "gamis")}
+
 # -----------------
+
 # Helpers
 # -----------------
 def get_auth_headers():
@@ -42,17 +56,12 @@ def login():
                 
                 # Fetch user details to see if admin
                 user_headers = {"Authorization": f"Bearer {token_data['access_token']}"}
-                # Quick verification call to check if they're admin
-                # We can call the API list endpoint to check if works, or add a /me endpoint.
-                # Actually, let's look at the JWT payload or simply ask backend. 
-                # Let's decode or simply get items to verify, and assume is_admin if username is "admin"
-                # Or check if we can query some info. Let's make a request to check user list (only admin can access)
-                users_res = requests.post(f"{BACKEND_URL}/api/users", json={"username": "test_ping_dummy", "password": "nop"}, headers=user_headers)
-                # If forbidden (403), then not admin. If 400 (username registration error/malformed), it means we hit the validation, so they ARE admin!
-                if users_res.status_code == 403:
-                    session["is_admin"] = False
-                else:
+                # Check if the user is an admin by attempting to query the list of users (only allowed for admins)
+                users_res = requests.get(f"{BACKEND_URL}/api/users", headers=user_headers)
+                if users_res.status_code == 200:
                     session["is_admin"] = True
+                else:
+                    session["is_admin"] = False
 
                 flash("Welcome back!", "success")
                 return redirect(url_for("index"))
@@ -100,6 +109,38 @@ def change_password():
             flash(f"Backend offline: {str(e)}", "danger")
 
     return render_template("change_password.html")
+
+@app.route("/admin", methods=["GET", "POST"])
+def admin_dashboard():
+    if not check_login():
+        return redirect(url_for("login"))
+    if not session.get("is_admin"):
+        flash("Access denied: Administrator privileges required.", "danger")
+        return redirect(url_for("index"))
+
+    current_banner = app.config.get("BANNER_TEXT", "gamis")
+
+    if request.method == "POST":
+        new_banner = request.form.get("banner_text", "").strip()
+        if not new_banner:
+            flash("Banner text cannot be empty.", "warning")
+        else:
+            try:
+                res = requests.post(
+                    f"{BACKEND_URL}/api/config/banner",
+                    json={"value": new_banner},
+                    headers=get_auth_headers()
+                )
+                if res.status_code == 200:
+                    app.config["BANNER_TEXT"] = new_banner
+                    current_banner = new_banner
+                    flash("Banner text updated successfully!", "success")
+                else:
+                    flash("Failed to update banner text.", "danger")
+            except Exception as e:
+                flash(f"Error communicating with backend: {str(e)}", "danger")
+
+    return render_template("admin.html", current_banner=current_banner)
 
 @app.route("/users")
 def list_users():

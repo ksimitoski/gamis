@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - {{ banner_text }}{% endblock %}
+
+{% block content %}
+<div class="form-card" style="max-width: 500px;">
+  <h1 class="form-title" id="admin-header">Admin Dashboard</h1>
+
+  <section style="margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+    <h2 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">User Management</h2>
+    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+      View, create, edit, or delete user accounts and their associated permissions.
+    </p>
+    <a href="{{ url_for('list_users') }}" class="btn btn-secondary" id="btn-manage-users" style="display: inline-block;">
+      👥 Manage Users
+    </a>
+  </section>
+
+  <section>
+    <h2 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Site Settings</h2>
+    <form action="{{ url_for('admin_dashboard') }}" method="POST" id="admin-settings-form">
+      <div class="form-group">
+        <label for="banner_text">Header Banner Text</label>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: -0.25rem; margin-bottom: 0.75rem;">
+          Change the site name displayed in the top-left corner of the header.
+        </p>
+        <input type="text" id="banner_text" name="banner_text" class="form-control" 
+               placeholder="Enter custom banner text" value="{{ current_banner }}" required>
+      </div>
+
+      <div class="form-actions" style="margin-top: 2rem;">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary" id="btn-admin-cancel">Back to Dashboard</a>
+        <button type="submit" class="btn btn-primary" id="btn-admin-submit">Save Settings</button>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

@@ -33,3 +33,10 @@ class InventoryItem(Base):
     # Ownership association
     added_by_id = Column(String, ForeignKey("users.id"), nullable=False)
     added_by = relationship("User", back_populates="items")
+
+class SystemConfig(Base):
+    __tablename__ = "system_config"
+
+    key = Column(String, primary_key=True, index=True)
+    value = Column(String, nullable=False)
+

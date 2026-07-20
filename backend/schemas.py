@@ -60,3 +60,17 @@ class InventoryItemResponse(InventoryItemBase):
 
     class Config:
         from_attributes = True
+
+# -----------------
+# System Config Schemas
+# -----------------
+class SystemConfigResponse(BaseModel):
+    key: str
+    value: str
+
+    class Config:
+        from_attributes = True
+
+class SystemConfigUpdate(BaseModel):
+    value: str
+
