@@ -2,6 +2,8 @@ import os
 import shutil
 import uuid
 import secrets
+import io
+from PIL import Image
 from typing import List, Optional
 from datetime import datetime, timedelta
 
@@ -91,12 +93,39 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 def save_upload_file(upload_file: UploadFile) -> str:
-    _, ext = os.path.splitext(upload_file.filename)
-    filename = f"{uuid.uuid4()}{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    with open(filepath, "wb") as buffer:
-        shutil.copyfileobj(upload_file.file, buffer)
-    return filename
+    # Read file content into memory
+    contents = upload_file.file.read()
+    
+    try:
+        # Load the image using Pillow
+        image = Image.open(io.BytesIO(contents))
+        
+        # Define max dimensions for web-friendly image (e.g. 1024x1024)
+        max_size = (1024, 1024)
+        image.thumbnail(max_size, Image.Resampling.LANCZOS)
+        
+        # Save as WebP format which is very web friendly in size
+        filename = f"{uuid.uuid4()}.webp"
+        filepath = os.path.join(UPLOAD_DIR, filename)
+        
+        # Handle transparency modes for WebP
+        if image.mode in ('RGBA', 'LA') or (image.mode == 'P' and 'transparency' in image.info):
+            image.save(filepath, format="WEBP", quality=85)
+        else:
+            image = image.convert("RGB")
+            image.save(filepath, format="WEBP", quality=85)
+            
+        return filename
+    except Exception:
+        # If it's not a valid image format supported by Pillow, fallback to saving the original file
+        # Reset file cursor before writing
+        upload_file.file.seek(0)
+        _, ext = os.path.splitext(upload_file.filename)
+        filename = f"{uuid.uuid4()}{ext}"
+        filepath = os.path.join(UPLOAD_DIR, filename)
+        with open(filepath, "wb") as buffer:
+            shutil.copyfileobj(upload_file.file, buffer)
+        return filename
 
 # -----------------
 # Startup Events
