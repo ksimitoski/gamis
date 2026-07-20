@@ -6,7 +6,6 @@ import io
 from PIL import Image
 from typing import List, Optional
 from datetime import datetime, timedelta
-
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,7 +14,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from jose import JWTError, jwt
 import bcrypt
-
 import models, schemas, database
 from database import engine, get_db
 
