@@ -231,6 +231,37 @@ main {
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
+.flash-close-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0 0 1rem;
+  margin: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flash-close-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.flash-message {
+  transition: opacity 0.3s ease, transform 0.3s ease, margin 0.3s ease, padding 0.3s ease, height 0.3s ease;
+}
+
+.flash-message.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 /* Statistics Grid */
 .stats-grid {
   display: grid;

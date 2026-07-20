@@ -81,4 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ----------------------
+    // 5. Dismiss Flash Messages
+    // ----------------------
+    const flashCloseButtons = document.querySelectorAll('.flash-close-btn');
+    flashCloseButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const flashMessage = btn.closest('.flash-message');
+            if (flashMessage) {
+                flashMessage.classList.add('fade-out');
+                flashMessage.addEventListener('transitionend', () => {
+                    flashMessage.remove();
+                });
+            }
+        });
+    });
 });

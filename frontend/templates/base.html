@@ -61,6 +61,7 @@
           {% for category, message in messages %}
             <div class="flash-message flash-{{ category }}">
               <span>{{ message }}</span>
+              <button class="flash-close-btn" aria-label="Dismiss message">&times;</button>
             </div>
           {% endfor %}
         </div>
