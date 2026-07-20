@@ -79,4 +79,24 @@
       </div>
     {% endfor %}
   </section>
+
+  <!-- Pagination Section -->
+  <section class="pagination-container" id="pagination-container" style="display: none;">
+    <div class="pagination-controls">
+      <button id="prev-page-btn" class="btn btn-secondary btn-sm" aria-label="Previous Page">&laquo; Prev</button>
+      <div id="page-numbers" class="page-numbers"></div>
+      <button id="next-page-btn" class="btn btn-secondary btn-sm" aria-label="Next Page">Next &raquo;</button>
+    </div>
+    <div class="pagination-limit">
+      <label for="per-page-select">Items per page:</label>
+      <select id="per-page-select" class="form-select-sm">
+        <option value="25" selected>25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="250">250</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+      </select>
+    </div>
+  </section>
 {% endblock %}
