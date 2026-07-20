@@ -351,6 +351,7 @@ def create_item(
     cost: float = Form(...),
     price: float = Form(...),
     custom_id: Optional[str] = Form(None),
+    comment: Optional[str] = Form(None),
     photo: Optional[UploadFile] = File(None),
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -367,6 +368,7 @@ def create_item(
         cost=cost,
         price=price,
         custom_id=custom_id,
+        comment=comment,
         photo_name=photo_name,
         added_by_id=current_user.id
     )
@@ -385,6 +387,7 @@ def update_item(
     cost: float = Form(...),
     price: float = Form(...),
     custom_id: Optional[str] = Form(None),
+    comment: Optional[str] = Form(None),
     photo: Optional[UploadFile] = File(None),
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -400,6 +403,7 @@ def update_item(
     db_item.cost = cost
     db_item.price = price
     db_item.custom_id = custom_id
+    db_item.comment = comment
 
     if photo and photo.filename:
         # Delete old photo if it exists

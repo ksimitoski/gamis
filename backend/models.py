@@ -29,6 +29,7 @@ class InventoryItem(Base):
     price = Column(Float, nullable=False)
     photo_name = Column(String, nullable=True)
     custom_id = Column(String, nullable=True)
+    comment = Column(String, nullable=True)
 
     # Ownership association
     added_by_id = Column(String, ForeignKey("users.id"), nullable=False)

@@ -48,6 +48,7 @@ class InventoryItemBase(BaseModel):
     cost: float = Field(..., ge=0.0)
     price: float = Field(..., ge=0.0)
     custom_id: Optional[str] = None
+    comment: Optional[str] = None
 
 class InventoryItemCreate(InventoryItemBase):
     pass

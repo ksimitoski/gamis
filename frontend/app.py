@@ -352,6 +352,7 @@ def add_item():
         cost = request.form.get("cost")
         price = request.form.get("price")
         custom_id = request.form.get("custom_id")
+        comment = request.form.get("comment")
         photo = request.files.get("photo")
 
         data = {
@@ -361,7 +362,8 @@ def add_item():
             "weight": weight,
             "cost": cost,
             "price": price,
-            "custom_id": custom_id
+            "custom_id": custom_id,
+            "comment": comment
         }
         files = None
         if photo and photo.filename:
@@ -401,6 +403,7 @@ def edit_item(item_id):
         cost = request.form.get("cost")
         price = request.form.get("price")
         custom_id = request.form.get("custom_id")
+        comment = request.form.get("comment")
         photo = request.files.get("photo")
 
         data = {
@@ -410,7 +413,8 @@ def edit_item(item_id):
             "weight": weight,
             "cost": cost,
             "price": price,
-            "custom_id": custom_id
+            "custom_id": custom_id,
+            "comment": comment
         }
         files = None
         if photo and photo.filename:
