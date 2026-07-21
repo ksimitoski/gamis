@@ -3,7 +3,7 @@
 {% block title %}Login - gamis{% endblock %}
 
 {% block content %}
-<div class="form-card" style="max-width: 400px; margin: 4rem auto;">
+<div class="form-card" style="max-width: 400px; margin: 0.5rem auto;">
   <div style="text-align: center; margin-bottom: 2rem;">
     <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">💎</div>
     <h1 class="form-title" style="margin-bottom: 0.5rem; font-size: 1.75rem;">Log in to gamis</h1>
@@ -13,7 +13,8 @@
   <form action="{{ url_for('login') }}" method="POST">
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required autofocus>
+      <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required
+        autofocus>
     </div>
 
     <div class="form-group" style="margin-bottom: 2rem;">
@@ -21,7 +22,8 @@
       <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
     </div>
 
-    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.05rem;" id="btn-login-submit">
+    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.05rem;"
+      id="btn-login-submit">
       Log In
     </button>
   </form>
