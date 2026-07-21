@@ -370,6 +370,11 @@ def create_item(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin users are allowed to add inventory items."
+        )
     photo_name = None
     if photo and photo.filename:
         photo_name = save_upload_file(photo)
@@ -406,6 +411,11 @@ def update_item(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin users are allowed to edit inventory items."
+        )
     db_item = db.query(models.InventoryItem).filter(models.InventoryItem.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -440,6 +450,11 @@ def delete_item(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin users are allowed to delete inventory items."
+        )
     db_item = db.query(models.InventoryItem).filter(models.InventoryItem.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")

@@ -43,7 +43,9 @@
         <option value="cost-desc">Cost (High to Low)</option>
       </select>
     </div>
-    <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-body">+ Create Entry</a>
+    {% if session.get('is_admin') %}
+      <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-body">+ Create Entry</a>
+    {% endif %}
   </section>
 
   <!-- Inventory Grid -->
@@ -94,7 +96,9 @@
       <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-secondary);">
         <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">🔍</span>
         <h3>No items in inventory.</h3>
-        <p style="margin-top: 0.5rem;">Click the button above to add your first gem or mineral!</p>
+        {% if session.get('is_admin') %}
+          <p style="margin-top: 0.5rem;">Click the button above to add your first gem or mineral!</p>
+        {% endif %}
       </div>
     {% endfor %}
   </section>

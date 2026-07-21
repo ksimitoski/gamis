@@ -343,6 +343,9 @@ def item_detail(item_id):
 def add_item():
     if not check_login():
         return redirect(url_for("login"))
+    if not session.get("is_admin"):
+        flash("Access denied: Administrator privileges required.", "danger")
+        return redirect(url_for("index"))
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -394,6 +397,9 @@ def add_item():
 def edit_item(item_id):
     if not check_login():
         return redirect(url_for("login"))
+    if not session.get("is_admin"):
+        flash("Access denied: Administrator privileges required.", "danger")
+        return redirect(url_for("index"))
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -456,6 +462,9 @@ def edit_item(item_id):
 def delete_item(item_id):
     if not check_login():
         return redirect(url_for("login"))
+    if not session.get("is_admin"):
+        flash("Access denied: Administrator privileges required.", "danger")
+        return redirect(url_for("index"))
     try:
         res = requests.delete(f"{BACKEND_URL}/api/items/{item_id}", headers=get_auth_headers())
         if res.status_code == 204:

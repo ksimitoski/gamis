@@ -45,7 +45,9 @@
             {% endif %}
             <a href="{{ url_for('change_password') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-change-password-nav">Change Password</a>
             <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-logout-nav">Logout</a>
-            <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-nav">+ Add Item</a>
+            {% if session.get('is_admin') %}
+              <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-nav">+ Add Item</a>
+            {% endif %}
           </div>
         {% endif %}
       </div>
