@@ -194,6 +194,13 @@ def create_user(
             detail="Only admin users are allowed to manage users."
         )
     
+    import re
+    if not re.match(r"^[a-z0-9]+$", user_in.username):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username must contain only lowercase letters and numbers (no capital letters or special characters)."
+        )
+    
     existing_user = db.query(models.User).filter(models.User.username == user_in.username).first()
     if existing_user:
         raise HTTPException(
@@ -240,6 +247,13 @@ def update_user(
     if not user_to_update:
         raise HTTPException(status_code=404, detail="User not found")
         
+    import re
+    if user_update.username is not None and not re.match(r"^[a-z0-9]+$", user_update.username):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username must contain only lowercase letters and numbers (no capital letters or special characters)."
+        )
+
     # Prevent modifying username or admin role of the original 'admin' user
     if user_to_update.username == "admin":
         if user_update.username is not None and user_update.username != "admin":
