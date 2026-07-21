@@ -18,7 +18,7 @@ import models, schemas, database
 from database import engine, get_db
 
 # JWT Configuration
-SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "gamis-jwt-ultra-secret-key-123")
+SECRET_KEY = os.environ.get("SECRET_KEY", os.environ.get("JWT_SECRET_KEY", "gamis-jwt-ultra-secret-key-123"))
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 600
 

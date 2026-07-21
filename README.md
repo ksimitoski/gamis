@@ -16,12 +16,15 @@ graph TD
 
 ## Features
 
-- **Dashboard & Inventory Management**: View, add, edit, and delete gems, minerals, or meteorites. Track parameters like weight, date acquired, cost price, selling price, and photos.
+- **Dashboard & Inventory Catalog**: View detailed gem, mineral, or meteorite entries with metrics such as weight, date acquired, cost price, selling price, and photos.
+- **Role-Based Access Control**:
+  - **Regular Users**: Read-only access to browse and view inventory items. Add, edit, and delete action buttons are automatically hidden.
+  - **Admin Users**: Full privileges to add, edit, and delete inventory items, manage application banner settings, and administer user accounts.
 - **Client-Side Instant Search**: Filter items instantly by name, category, or **Custom ID**.
-- **Admin User Management**: Admin users can access a dedicated user management dashboard to add, edit roles, or delete users.
+- **Admin User Management**: Admin users can access a dedicated user management dashboard to add new users, edit user roles, or remove accounts.
 - **Mobile-Responsive Design**: Smooth responsive layouts featuring a collapsing hamburger navigation drawer on mobile and responsive vertical grids for detail views.
 - **Security & Safety Guardrails**:
-  - Direct endpoint authorization validation.
+  - Endpoint authorization checks on backend API (403 Forbidden for unauthorized write attempts).
   - Prevention of demoting, renaming, or deleting the original `admin` user.
   - Prevention of self-deletion for logged-in administrators.
 
@@ -38,15 +41,29 @@ graph TD
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+### Environment Configuration
+
+Before running the application, you can optionally create a `.env` file from `.env.example` to customize the application ports and secret key:
+
+```bash
+cp .env.example .env
+```
+
+Available variables in `.env`:
+- `BACKEND_PORT`: Host port mapping for backend API (default: `8000`)
+- `FRONTEND_PORT`: Host port mapping for web frontend (default: `5000`)
+- `SECRET_KEY`: Secret key used for session and JWT authentication security
+
 ### Running the Application
 
 1. Clone or download the repository.
-2. Run the services from the project root:
+2. (Optional) Create and adjust your `.env` file.
+3. Run the services from the project root:
    ```bash
    docker compose up --build -d
    ```
-3. Access the web interface at `http://localhost:5000`.
-4. The backend service runs at `http://localhost:8000`.
+4. Access the web interface at `http://localhost:5000` (or `http://localhost:<FRONTEND_PORT>`).
+5. The backend API runs at `http://localhost:8000` (or `http://localhost:<BACKEND_PORT>`).
 
 ### Initial Setup & Admin Credentials
 
