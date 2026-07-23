@@ -83,13 +83,42 @@ header {
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo:hover {
+  transform: translateY(-1px);
 }
 
 .logo span {
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  background: linear-gradient(
+    90deg, 
+    var(--accent) 0%, 
+    #34d399 25%, 
+    var(--accent-secondary) 50%, 
+    #a78bfa 75%, 
+    var(--accent) 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  transition: filter 0.3s ease;
+}
+
+.logo:hover span {
+  animation: textShimmer 2s linear infinite;
+  filter: drop-shadow(0 2px 8px rgba(16, 185, 129, 0.3));
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .logo-icon {
@@ -102,6 +131,12 @@ header {
   justify-content: center;
   color: white;
   font-size: 1.25rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo:hover .logo-icon {
+  transform: scale(1.1) rotate(6deg);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 
 .nav-actions {
