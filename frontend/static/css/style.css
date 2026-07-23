@@ -721,8 +721,9 @@ footer {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
-  min-width: 175px;
+  right: 0;
+  left: auto;
+  min-width: 185px;
   margin-top: 0.25rem;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -764,6 +765,17 @@ footer {
 .dropdown-item:hover {
   background-color: var(--border-color);
   color: var(--accent);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 0.35rem 0;
+}
+
+.dropdown-item.dropdown-danger:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
 }
 
 /* Mobile Responsive Adjustments */

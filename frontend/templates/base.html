@@ -56,15 +56,28 @@
                   </svg>
                   Change Password
                 </a>
+                {% if session.get('is_admin') %}
+                  <a href="{{ url_for('admin_dashboard') }}" class="dropdown-item" id="dropdown-admin-nav">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Admin Dashboard
+                  </a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                <a href="{{ url_for('logout') }}" class="dropdown-item dropdown-danger" id="btn-logout-nav">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  Logout
+                </a>
               </div>
             </div>
-            {% if session.get('is_admin') %}
-              <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-admin-nav">Admin</a>
-            {% endif %}
-            <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" id="btn-logout-nav">Logout</a>
-            {% if session.get('is_admin') %}
-              <a href="{{ url_for('add_item') }}" class="btn btn-primary" id="btn-add-nav">+ Add Item</a>
-            {% endif %}
           </div>
         {% endif %}
       </div>
