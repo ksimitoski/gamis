@@ -680,6 +680,92 @@ footer {
   gap: 1rem;
 }
 
+/* User Dropdown Header Menu */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-display {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.user-dropdown:hover .user-display,
+.user-display:focus {
+  color: var(--text-primary);
+  background-color: var(--border-color);
+}
+
+.dropdown-caret {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+  margin-left: 0.15rem;
+}
+
+.user-dropdown:hover .dropdown-caret {
+  transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 175px;
+  margin-top: 0.25rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 0.4rem;
+  z-index: 1000;
+  animation: slideIn 0.15s ease-out;
+}
+
+/* Bridge gap so hover remains active while moving cursor */
+.user-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
+.user-dropdown:hover .user-dropdown-menu,
+.user-dropdown:focus-within .user-dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.dropdown-item:hover {
+  background-color: var(--border-color);
+  color: var(--accent);
+}
+
 /* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
   .menu-toggle {
@@ -719,9 +805,27 @@ footer {
     display: flex;
   }
 
+  .user-dropdown {
+    width: 100%;
+  }
+
   .nav-links .user-display {
-    padding: 0.5rem 0;
+    padding: 0.6rem 0.75rem;
     border-bottom: 1px solid var(--border-color);
+    justify-content: center;
+    width: 100%;
+  }
+
+  .user-dropdown-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+    padding: 0.25rem 0 0 0;
+  }
+
+  .dropdown-item {
     justify-content: center;
   }
 
