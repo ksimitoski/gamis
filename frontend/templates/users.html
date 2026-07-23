@@ -5,7 +5,9 @@
 {% block content %}
 <div style="max-width: 900px; margin: 0 auto;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1 style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">User Management</h1>
+    <h1
+      style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+      User Management</h1>
     <a href="{{ url_for('create_user') }}" class="btn btn-primary" id="btn-add-user">+ Add User</a>
   </div>
 
@@ -26,23 +28,30 @@
               <span>👤</span>
               <span id="user-username-{{ u.id }}">{{ u.username }}</span>
               {% if u.username == 'admin' %}
-                <span style="font-size: 0.75rem; background-color: var(--border-color); padding: 0.15rem 0.5rem; border-radius: 4px; color: var(--text-secondary);">Original</span>
+              <span
+                style="font-size: 0.75rem; background-color: var(--border-color); padding: 0.15rem 0.5rem; border-radius: 4px; color: var(--text-secondary);">Original</span>
               {% endif %}
             </td>
             <td style="padding: 1.25rem 1rem;">
               {% if u.is_admin %}
-                <span style="background-color: rgba(139, 92, 246, 0.1); color: var(--accent-secondary); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">Administrator</span>
+              <span
+                style="background-color: rgba(139, 92, 246, 0.1); color: var(--accent-secondary); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">Administrator</span>
               {% else %}
-                <span style="background-color: var(--border-color); color: var(--text-secondary); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">Regular User</span>
+              <span
+                style="background-color: var(--border-color); color: var(--text-secondary); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">Regular
+                User</span>
               {% endif %}
             </td>
             <td style="padding: 1.25rem 1rem; text-align: right;">
               <div style="display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center;">
-                <a href="{{ url_for('edit_user', user_id=u.id) }}" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" id="btn-edit-{{ u.id }}">Edit</a>
+                <a href="{{ url_for('edit_user', user_id=u.id) }}" class="btn btn-secondary"
+                  style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" id="btn-edit-{{ u.id }}">Edit</a>
                 {% if u.username != 'admin' and u.username != session.get('username') %}
-                  <form action="{{ url_for('delete_user', user_id=u.id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');">
-                    <button type="submit" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" id="btn-delete-{{ u.id }}">Delete</button>
-                  </form>
+                <form action="{{ url_for('delete_user', user_id=u.id) }}" method="POST" style="margin: 0;"
+                  onsubmit="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');">
+                  <button type="submit" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;"
+                    id="btn-delete-{{ u.id }}">Delete</button>
+                </form>
                 {% endif %}
               </div>
             </td>
